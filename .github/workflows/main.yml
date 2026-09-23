@@ -9,7 +9,7 @@ on:
       commit_count:
         description: 'Number of commits to make'
         required: false
-        default: '60'
+        default: '10'
 
 permissions:
   contents: write
