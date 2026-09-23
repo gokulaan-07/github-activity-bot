@@ -9,7 +9,7 @@ on:
       commit_count:
         description: 'Number of commits to make'
         required: false
-        default: '140'
+        default: '60'
 
 permissions:
   contents: write
@@ -27,9 +27,9 @@ jobs:
       - name: Make Multiple Commits
         run: |
           git config --global user.name "gokulaan-07"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.email "gokulaan9c@gmail.com"
           
-          # Default is 3 commits daily (you can change '3' to any number like 5 or 10)
+          # Generates 3 commits daily automatically
           COUNT=${{ github.event.inputs.commit_count || 3 }}
           
           for i in $(seq 1 $COUNT); do
