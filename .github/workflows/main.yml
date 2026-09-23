@@ -1,0 +1,32 @@
+name: Daily Commit Generator
+
+on:
+  schedule:
+    # Runs daily at 09:00 UTC (14:30 IST)
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Allows triggering manually from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Activity Log
+        run: |
+          echo "Activity log: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> activity_log.txt
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "gokulaan-07"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git add activity_log.txt
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(activity): scheduled daily commit [$(date -u +'%Y-%m-%d')]" && git push)
+          
