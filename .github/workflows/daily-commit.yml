@@ -1,0 +1,41 @@
+name: Daily Commit Generator
+
+on:
+  schedule:
+    # Runs daily at 09:00 UTC (14:30 IST)
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      commit_count:
+        description: 'Number of commits to make'
+        required: false
+        default: '3'
+
+permissions:
+  contents: write
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make Multiple Commits
+        run: |
+          git config --global user.name "gokulaan-07"
+          git config --global user.email "gokulaan9c@gmail.com"
+          
+          COUNT=${{ github.event.inputs.commit_count || 3 }}
+          
+          for i in $(seq 1 $COUNT); do
+            echo "Activity log update #$i at $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> activity_log.txt
+            git add activity_log.txt
+            git commit -m "chore(activity): update log entry #$i [$(date -u +'%Y-%m-%d %H:%M:%S')]" || true
+            sleep 2
+          done
+          
+          git push origin HEAD:main
