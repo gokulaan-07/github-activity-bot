@@ -16,8 +16,9 @@ def run_cmd(cmd, cwd=REPO_DIR):
     return result.returncode == 0
 
 def make_commits(count=3):
+    # Using official GitHub noreply email guarantees attribution to @gokulaan-07
     run_cmd(["git", "config", "user.name", "gokulaan-07"])
-    run_cmd(["git", "config", "user.email", "gokulaan9c@gmail.com"])
+    run_cmd(["git", "config", "user.email", "gokulaan-07@users.noreply.github.com"])
     
     for i in range(1, count + 1):
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
